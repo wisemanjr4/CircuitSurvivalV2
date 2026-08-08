@@ -1,0 +1,67 @@
+name: CircuitSurvivalV2
+version: 2.0.0
+main: net.circuitsurvival.CircuitSurvivalPlugin
+api-version: '1.20'
+description: 回路サバイバル鯖向け多機能プラグイン V2
+authors: [CircuitSurvival]
+
+commands:
+  cs:
+    description: CircuitSurvivalメインコマンド
+    usage: /cs <give|pipe|reload>
+    permission: circuitsurvival.use
+
+  # サバイバルWE (//pos1 = /swe_pos1 にエイリアス設定)
+  swe_pos1:
+    description: WE Pos1選択
+    aliases: ['pos1']
+  swe_pos2:
+    description: WE Pos2選択
+    aliases: ['pos2']
+  swe_set:
+    description: 範囲を埋める
+    aliases: ['set']
+  swe_replace:
+    description: ブロック置換
+    aliases: ['replace']
+  swe_fill:
+    description: 空気を埋める
+    aliases: ['fill']
+  swe_walls:
+    description: 4面の壁
+    aliases: ['walls']
+  swe_outline:
+    description: 6面の外枠
+    aliases: ['outline']
+  swe_copy:
+    description: コピー
+    aliases: ['copy']
+  swe_paste:
+    description: ペースト
+    aliases: ['paste']
+  swe_undo:
+    description: Undo
+    aliases: ['undo']
+  swe_rotate:
+    description: 回転
+    aliases: ['rotate']
+  swe_sel:
+    description: 選択情報表示
+    aliases: ['sel']
+  swe_confirm:
+    description: WE操作の確認実行
+    aliases: ['confirm']
+
+permissions:
+  circuitsurvival.use:
+    description: 基本使用権限
+    default: true
+  circuitsurvival.admin:
+    description: 管理者コマンドへのアクセス
+    default: op
+  circuitsurvival.swe:
+    description: サバイバルWorldEditの使用
+    default: true
+  circuitsurvival.machines:
+    description: カスタムマシンの使用
+    default: true

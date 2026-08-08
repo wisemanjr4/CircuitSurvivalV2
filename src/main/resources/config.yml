@@ -1,0 +1,65 @@
+# CircuitSurvival 設定ファイル
+
+# サバイバルWorldEdit設定
+swe:
+  # 一回のundoで戻せる最大ブロック数
+  max_undo_size: 100000
+  # undo履歴の保持数
+  undo_history: 10
+
+# パイプ設定
+pipes:
+  # アイテム転送間隔(tick) 20tick=1秒
+  transfer_interval: 10
+  # 1回の転送で移動するアイテム数
+  transfer_amount: 4
+
+# 機械設定 (tick値は20tick=1秒)
+machines:
+  crusher:
+    process_ticks: 40      # 粉砕インターバル (実装: 40固定)
+  compressor:
+    process_ticks: 40      # 圧縮インターバル (実装: 40固定)
+  woodcutter:
+    process_ticks: 20      # 製材インターバル (6板材/tickは強すぎなので20tick)
+  auto_smelter:
+    process_ticks: 40      # 精錬インターバル (燃料不要で1回/tick)
+  auto_brewer:
+    process_ticks: 60      # 醸造インターバル
+  auto_fisher:
+    process_ticks: 100     # 釣りインターバル
+  auto_farmer:
+    process_ticks: 40      # 農場インターバル
+  electric_furnace:
+    process_ticks: 2       # 電気精錬インターバル (高速だが1tickは強すぎ)
+  pulverizer:
+    process_ticks: 40      # 粉砕精錬インターバル (3倍処理)
+  custom_crafter:
+    process_ticks: 8       # カスタムクラフトインターバル
+  vacuum_hopper:
+    process_ticks: 10      # 吸引インターバル
+  bone_mealer:
+    process_ticks: 4       # 骨粉散布インターバル
+  xp_converter:
+    process_ticks: 40      # 経験値変換インターバル
+  fluid_collector:
+    process_ticks: 20      # 液体収集インターバル
+  duplicator:
+    process_ticks: 200
+    cost_amount: 16
+  timer:
+    min_period: 2
+
+# エネルギー(EN)設定
+energy:
+  # EN消費倍率 (1=標準)
+  multiplier: 1
+  # 1tickあたりの送電ロス (EN減衰)
+  passive_drain: 1
+
+# 信号強度表示
+signal_display:
+  # 表示を有効にするか
+  enabled: true
+  # 表示距離(ブロック)
+  range: 16
