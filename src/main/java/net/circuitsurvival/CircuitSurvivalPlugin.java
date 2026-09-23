@@ -442,7 +442,7 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
                 case BARREL              -> "樽";
                 case BLAST_FURNACE       -> "溶鉱炉";
                 case SEA_LANTERN         -> "海のランタン";
-                case CALIBRATED_SCULK_SENSOR -> "調整スカルク";
+                case SCULK_SENSOR -> "スカルクセンサー";
                 case LAPIS_LAZULI        -> "ラピスラズリ";
                 case NOTE_BLOCK          -> "音符ブロック";
                 case OBSIDIAN            -> "黒曜石";

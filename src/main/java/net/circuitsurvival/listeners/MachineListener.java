@@ -167,8 +167,6 @@ public class MachineListener implements Listener {
         m.put(Material.BEETROOT_SEEDS, 1);
         m.put(Material.MELON_SEEDS,    2);
         m.put(Material.PUMPKIN_SEEDS,  2);
-        m.put(Material.TORCHFLOWER_SEEDS, 5);
-        m.put(Material.PITCHER_POD,    5);
         XP_VALUES = java.util.Collections.unmodifiableMap(m);
     }
 
@@ -185,8 +183,6 @@ public class MachineListener implements Listener {
         SEED_TO_CROP.put(Material.BEETROOT_SEEDS,     Material.BEETROOTS);
         SEED_TO_CROP.put(Material.MELON_SEEDS,        Material.MELON_STEM);
         SEED_TO_CROP.put(Material.PUMPKIN_SEEDS,      Material.PUMPKIN_STEM);
-        SEED_TO_CROP.put(Material.TORCHFLOWER_SEEDS,  Material.TORCHFLOWER_CROP);
-        SEED_TO_CROP.put(Material.PITCHER_POD,        Material.PITCHER_CROP);
         SEED_TO_CROP.put(Material.SWEET_BERRIES,      Material.SWEET_BERRY_BUSH);
         SEED_TO_CROP.put(Material.NETHER_WART,        Material.NETHER_WART);
 
@@ -196,8 +192,6 @@ public class MachineListener implements Listener {
         SEED_SOIL.put(Material.BEETROOT_SEEDS,    Material.FARMLAND);
         SEED_SOIL.put(Material.MELON_SEEDS,       Material.FARMLAND);
         SEED_SOIL.put(Material.PUMPKIN_SEEDS,     Material.FARMLAND);
-        SEED_SOIL.put(Material.TORCHFLOWER_SEEDS, Material.FARMLAND);
-        SEED_SOIL.put(Material.PITCHER_POD,       Material.FARMLAND);
         SEED_SOIL.put(Material.SWEET_BERRIES,     Material.GRASS_BLOCK);
         SEED_SOIL.put(Material.NETHER_WART,       Material.SOUL_SAND);
     }
@@ -1500,8 +1494,8 @@ public class MachineListener implements Listener {
                 }
             }
             case OAK_BUTTON, SPRUCE_BUTTON, BIRCH_BUTTON, JUNGLE_BUTTON,
-                 ACACIA_BUTTON, DARK_OAK_BUTTON, MANGROVE_BUTTON, CHERRY_BUTTON,
-                 BAMBOO_BUTTON, CRIMSON_BUTTON, WARPED_BUTTON, STONE_BUTTON,
+                 ACACIA_BUTTON, DARK_OAK_BUTTON, MANGROVE_BUTTON,
+                 CRIMSON_BUTTON, WARPED_BUTTON, STONE_BUTTON,
                  POLISHED_BLACKSTONE_BUTTON -> {
                 // ボタン: 押す(一瞬ONにしてバニラ任せで戻る)
                 if (data instanceof org.bukkit.block.data.type.Switch sw && !sw.isPowered()) {
@@ -1805,7 +1799,8 @@ public class MachineListener implements Listener {
                 int luckLevel = 0;
                 if (contents[0] != null && contents[0].getType() == Material.FISHING_ROD) {
                     luckLevel = contents[0].getEnchantmentLevel(
-                            org.bukkit.Registry.ENCHANTMENT.get(org.bukkit.NamespacedKey.minecraft("luck_of_the_sea")));
+                            org.bukkit.enchantments.Enchantment.getByKey(
+                                    org.bukkit.NamespacedKey.minecraft("luck_of_the_sea")));
                     ItemMeta m = contents[0].getItemMeta();
                     if (m instanceof org.bukkit.inventory.meta.Damageable dm) {
                         int dmg = dm.getDamage() + 1;
@@ -2921,9 +2916,9 @@ public class MachineListener implements Listener {
             for (int i = 0; i < 25; i++) {
                 if (isEmpty(contents[i]) || contents[i].getType() != Material.POTION) continue;
                 if (!(contents[i].getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta pm)) continue;
-                PotionType base = pm.getBasePotionType();
+                PotionType base = pm.getBasePotionData().getType();
                 if (base != null && base != PotionType.WATER) continue;
-                pm.setBasePotionType(PotionType.AWKWARD);
+                pm.setBasePotionData(new org.bukkit.potion.PotionData(PotionType.AWKWARD));
                 contents[i].setItemMeta(pm);
                 brewed = true;
             }
@@ -2934,8 +2929,8 @@ public class MachineListener implements Listener {
             for (int i = 0; i < 25; i++) {
                 if (isEmpty(contents[i]) || contents[i].getType() != Material.POTION) continue;
                 if (!(contents[i].getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta pm)) continue;
-                if (pm.getBasePotionType() != PotionType.AWKWARD) continue;
-                pm.setBasePotionType(target);
+                if (pm.getBasePotionData().getType() != PotionType.AWKWARD) continue;
+                pm.setBasePotionData(new org.bukkit.potion.PotionData(target));
                 contents[i].setItemMeta(pm);
                 brewed = true;
             }
@@ -3282,7 +3277,6 @@ public class MachineListener implements Listener {
             case ACACIA_LOG, ACACIA_WOOD, STRIPPED_ACACIA_LOG, STRIPPED_ACACIA_WOOD -> Material.ACACIA_PLANKS;
             case DARK_OAK_LOG, DARK_OAK_WOOD, STRIPPED_DARK_OAK_LOG, STRIPPED_DARK_OAK_WOOD -> Material.DARK_OAK_PLANKS;
             case MANGROVE_LOG, MANGROVE_WOOD, STRIPPED_MANGROVE_LOG, STRIPPED_MANGROVE_WOOD -> Material.MANGROVE_PLANKS;
-            case CHERRY_LOG, CHERRY_WOOD, STRIPPED_CHERRY_LOG, STRIPPED_CHERRY_WOOD -> Material.CHERRY_PLANKS;
             case BAMBOO_BLOCK, STRIPPED_BAMBOO_BLOCK -> Material.BAMBOO_PLANKS;
             case CRIMSON_STEM, CRIMSON_HYPHAE, STRIPPED_CRIMSON_STEM, STRIPPED_CRIMSON_HYPHAE -> Material.CRIMSON_PLANKS;
             case WARPED_STEM, WARPED_HYPHAE, STRIPPED_WARPED_STEM, STRIPPED_WARPED_HYPHAE -> Material.WARPED_PLANKS;
@@ -3453,7 +3447,7 @@ public class MachineListener implements Listener {
             case CACTUS         -> new ItemStack(Material.GREEN_DYE);
             case CHORUS_FRUIT   -> new ItemStack(Material.POPPED_CHORUS_FRUIT);
             case OAK_LOG, SPRUCE_LOG, BIRCH_LOG, JUNGLE_LOG, ACACIA_LOG, DARK_OAK_LOG,
-                 MANGROVE_LOG, CHERRY_LOG -> new ItemStack(Material.CHARCOAL);
+                 MANGROVE_LOG -> new ItemStack(Material.CHARCOAL);
             default -> null;
         };
     }
@@ -3558,7 +3552,7 @@ public class MachineListener implements Listener {
         if (t.startsWith("GOLDEN_") || t.startsWith("GOLD_")) return m.equals("GOLD_INGOT");
         if (t.startsWith("DIAMOND_")) return m.equals("DIAMOND");
         if (t.startsWith("NETHERITE_")) return m.equals("NETHERITE_INGOT");
-        if (t.startsWith("TURTLE_")) return m.equals("TURTLE_SCUTE");
+        if (t.startsWith("TURTLE_")) return m.equals("SCUTE");
         if (t.startsWith("LEATHER_")) return m.equals("LEATHER");
         if (t.startsWith("WOODEN_")) return m.equals("OAK_PLANKS");
         if (t.startsWith("STONE_")) return m.equals("COBBLESTONE");
@@ -4187,7 +4181,7 @@ public class MachineListener implements Listener {
     private boolean isReplaceable(Material m) {
         return m == Material.AIR || m == Material.CAVE_AIR || m == Material.VOID_AIR
                 || m == Material.WATER || m == Material.LAVA
-                || m == Material.SHORT_GRASS || m == Material.TALL_GRASS
+                || m == Material.GRASS || m == Material.TALL_GRASS
                 || m == Material.FERN || m == Material.LARGE_FERN
                 || m == Material.DEAD_BUSH
                 || m == Material.VINE || m == Material.SNOW;
@@ -4197,7 +4191,7 @@ public class MachineListener implements Listener {
         return m == Material.OAK_SAPLING || m == Material.SPRUCE_SAPLING
                 || m == Material.BIRCH_SAPLING || m == Material.JUNGLE_SAPLING
                 || m == Material.ACACIA_SAPLING || m == Material.DARK_OAK_SAPLING
-                || m == Material.MANGROVE_PROPAGULE || m == Material.CHERRY_SAPLING
+                || m == Material.MANGROVE_PROPAGULE
                 || m == Material.BAMBOO;
     }
 
@@ -4379,10 +4373,10 @@ public class MachineListener implements Listener {
             case LAVA_BUCKET -> 2000;
             case BAMBOO -> 4;
             case OAK_PLANKS, SPRUCE_PLANKS, BIRCH_PLANKS, JUNGLE_PLANKS, ACACIA_PLANKS,
-                 DARK_OAK_PLANKS, MANGROVE_PLANKS, CHERRY_PLANKS, BAMBOO_PLANKS,
+                 DARK_OAK_PLANKS, MANGROVE_PLANKS,
                  CRIMSON_PLANKS, WARPED_PLANKS -> 30;
             case OAK_LOG, SPRUCE_LOG, BIRCH_LOG, JUNGLE_LOG, ACACIA_LOG,
-                 DARK_OAK_LOG, MANGROVE_LOG, CHERRY_LOG -> 60;
+                 DARK_OAK_LOG, MANGROVE_LOG -> 60;
             default -> 0;
         };
     }

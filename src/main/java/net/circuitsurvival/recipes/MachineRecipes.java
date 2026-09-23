@@ -389,7 +389,7 @@ public class MachineRecipes {
                 .shape("QAQ", "ASA", "QRQ")
                 .setIngredient('Q', Material.QUARTZ)
                 .setIngredient('A', Material.AMETHYST_SHARD)
-                .setIngredient('S', Material.CALIBRATED_SCULK_SENSOR)
+                .setIngredient('S', Material.SCULK_SENSOR)
                 .setIngredient('R', Material.REDSTONE));
 
         // ── チャンクローダー x1 ──────────────────────────────────────────

@@ -1,7 +1,7 @@
 name: CircuitSurvivalV2
 version: 2.0.0
 main: net.circuitsurvival.CircuitSurvivalPlugin
-api-version: '1.20'
+api-version: '1.19'
 description: 回路サバイバル鯖向け多機能プラグイン V2
 authors: [CircuitSurvival]
 

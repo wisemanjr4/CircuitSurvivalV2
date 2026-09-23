@@ -43,8 +43,6 @@ public class SignalDisplayListener implements Listener {
             Material.ACACIA_BUTTON,
             Material.DARK_OAK_BUTTON,
             Material.MANGROVE_BUTTON,
-            Material.CHERRY_BUTTON,
-            Material.BAMBOO_BUTTON,
             Material.CRIMSON_BUTTON,
             Material.WARPED_BUTTON,
             Material.POLISHED_BLACKSTONE_BUTTON,
