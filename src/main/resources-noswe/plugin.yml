@@ -1,0 +1,23 @@
+name: CircuitSurvivalV2
+version: 2.0.0
+main: net.circuitsurvival.CircuitSurvivalPlugin
+api-version: '1.19'
+description: 回路サバイバル鯖向け多機能プラグイン V2 (SWEなし版)
+authors: [CircuitSurvival]
+
+commands:
+  cs:
+    description: CircuitSurvivalメインコマンド
+    usage: /cs <give|pipe|reload>
+    permission: circuitsurvival.use
+
+permissions:
+  circuitsurvival.use:
+    description: 基本使用権限
+    default: true
+  circuitsurvival.admin:
+    description: 管理者コマンドへのアクセス
+    default: op
+  circuitsurvival.machines:
+    description: カスタムマシンの使用
+    default: true

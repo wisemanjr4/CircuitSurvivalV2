@@ -1,6 +1,5 @@
 package net.circuitsurvival;
 
-import net.circuitsurvival.commands.SWECommand;
 import net.circuitsurvival.guide.GuideManager;
 import net.circuitsurvival.items.CustomItems;
 import net.circuitsurvival.items.IntermediateMaterials;
@@ -93,7 +92,6 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
     private NamespacedKey enStorageKey;
 
     // マネージャー
-    private SelectionManager selectionManager;
     private PipeManager pipeManager;
     private MachineManager machineManager;
     private WirelessRedstoneManager wirelessRedstoneManager;
@@ -119,7 +117,6 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
         enStorageKey = new NamespacedKey(this, "en_storage");
 
         // マネージャー初期化 (MachineManager を先に生成して PipeManager/EnergyManager に渡す)
-        selectionManager        = new SelectionManager();
         machineManager          = new MachineManager(this);
         pipeManager             = new PipeManager(this, machineManager);
         energyManager           = new EnergyManager(this, machineManager);
@@ -127,7 +124,6 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
 
         // リスナー登録
         var pm = getServer().getPluginManager();
-        pm.registerEvents(new WandListener(selectionManager), this);
         pm.registerEvents(new PipeListener(pipeManager, pipeTypeKey, pipeFilterKey, pipeChannelKey), this);
         pm.registerEvents(new LogicGateListener(this, gateTypeKey), this);
         machineListener = new MachineListener(this, machineManager, energyManager, machineTypeKey);
@@ -262,11 +258,15 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
         getCommand("cs").setExecutor(new MainCommand());
         getCommand("cs").setTabCompleter(new MainTabCompleter());
 
-        SWECommand sweCmd = new SWECommand(selectionManager);
-        String[] sweCommands = {"swe_pos1","swe_pos2","swe_set","swe_replace","swe_fill",
-                "swe_walls","swe_outline","swe_copy","swe_paste","swe_undo","swe_rotate","swe_sel"};
-        for (String cmd : sweCommands) {
-            if (getCommand(cmd) != null) getCommand(cmd).setExecutor(sweCmd);
+        // SWE (サバイバルWorldEdit): クラスが存在する場合のみ結合 (除去版では読み飛ばされる)
+        try {
+            Class.forName("net.circuitsurvival.commands.SWEBootstrap")
+                    .getMethod("init", CircuitSurvivalPlugin.class)
+                    .invoke(null, this);
+        } catch (ClassNotFoundException ignored) {
+            // SWE除去版
+        } catch (ReflectiveOperationException e) {
+            getLogger().warning("SWE bootstrap failed: " + e);
         }
     }
 
@@ -750,7 +750,6 @@ public class CircuitSurvivalPlugin extends JavaPlugin {
 
     // ---- ゲッター -------------------------------------------------------------
 
-    public SelectionManager getSelectionManager()               { return selectionManager; }
     public PipeManager getPipeManager()                         { return pipeManager; }
     public MachineManager getMachineManager()                   { return machineManager; }
     public WirelessRedstoneManager getWirelessRedstoneManager() { return wirelessRedstoneManager; }

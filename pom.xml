@@ -54,4 +54,38 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- SWE (サバイバルWorldEdit) 除去版: mvn package -Pnoswe -->
+        <profile>
+            <id>noswe</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.11.0</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/commands/SWECommand.java</exclude>
+                                <exclude>**/commands/SWEBootstrap.java</exclude>
+                                <exclude>**/managers/SelectionManager.java</exclude>
+                                <exclude>**/listeners/WandListener.java</exclude>
+                                <exclude>**/worldedit/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <excludes><exclude>plugin.yml</exclude></excludes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources-noswe</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
 </project>
